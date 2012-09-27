@@ -8,13 +8,13 @@ def prime?(n)
       return false;
     end
   end
-  puts n
   true
 end
 
-sum = 0
+sum = 2
 
-1.upto 2_000_000 do |i|
+3.upto 2_000_000 do |i|
+  next if i % 2 == 0
   sum += i if prime? i
 end
 
