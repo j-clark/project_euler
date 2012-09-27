@@ -8,8 +8,14 @@ def prime?(n)
       return false;
     end
   end
-
+  puts n
   true
 end
 
 sum = 0
+
+1.upto 2_000_000 do |i|
+  sum += i if prime? i
+end
+
+puts sum
