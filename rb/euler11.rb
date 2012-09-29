@@ -1,4 +1,3 @@
-
 def get_array(file)
   file = File.open(file)
 
@@ -19,58 +18,61 @@ def integerize(arr)
   end
 end
 
-def horizontal(arr)
-  theproduct = 0
-  0.upto arr.length - 4 do |i|
-    0.upto arr[i].length - 1 do |j|
-      localproduct = arr[i][j] * arr[i + 1][j] * arr[i + 2][j] * arr[i + 3][j]
-      theproduct = localproduct if localproduct >  theproduct
-    end
-  end
-  theproduct
-end
+def foursies(arr, desc)
+  prod = 0
+  desc[:i_start].upto arr.length - desc[:i_end] do |i|
+    desc[:j_start].upto arr[i].length - desc[:j_end] do |j|
+      local_prod = arr[i][j] * arr[ i + 1 * desc[:i_mult] ][ j + 1 * desc[:j_mult] ] \
+                             * arr[ i + 2 * desc[:i_mult] ][ j + 2 * desc[:j_mult] ] \
+                             * arr[ i + 3 * desc[:i_mult] ][ j + 3 * desc[:j_mult] ]
 
-def vertical(arr)
-  theproduct = 0
-  0.upto arr.length - 1 do |i|
-    0.upto arr[i].length - 4 do |j|
-      localproduct = arr[i][j] * arr[i][j + 1] * arr[i][j + 2] * arr[i][j + 3]
-      theproduct = localproduct if localproduct > theproduct
+      prod = local_prod if local_prod >  prod
     end
   end
-  theproduct
-end
-
-def diagonal_right(arr)
-  theproduct = 0
-  0.upto arr.length - 4 do |i|
-    0.upto arr[i].length - 4 do |j|
-      localproduct = arr[i][j] * arr[i + 1][j + 1] * arr[i + 2][j + 2] * arr[i + 3][j + 3]
-      theproduct = localproduct if localproduct > theproduct
-    end
-  end
-  theproduct  
-end
-
-def diagonal_left(arr)
-  theproduct = 0
-  3.upto arr.length - 1 do |i|
-    0.upto arr[i].length - 4 do |j|
-      localproduct = arr[i][j] * arr[i - 1][j + 1] * arr[i - 2][j + 2] * arr[i - 3][j + 3]
-      theproduct = localproduct if localproduct > theproduct
-    end
-  end
-  theproduct  
+  prod
 end
 
 arr = get_array '../11.txt'
 integerize arr
 
-product = horizontal arr
-vertical_product = vertical arr
-product = vertical_product if vertical_product > product
-diagonal_product = diagonal_right arr
-product = diagonal_product if diagonal_product > product
-diagonal_product = diagonal_left arr
-product = diagonal_product if diagonal_product > product
+desc = {
+  i_start:  0,
+  i_end:    4,
+  j_start:  0,
+  j_end:    1,
+  i_mult:   1,
+  j_mult:   0
+}
+product = [0, foursies(arr, desc)].max
+
+desc = {
+  i_start:  0,
+  i_end:    1,
+  j_start:  0,
+  j_end:    4,
+  i_mult:   0,
+  j_mult:   1
+}
+product = [product, foursies(arr, desc)].max
+
+desc = {
+  i_start:  0,
+  i_end:    4,
+  j_start:  0,
+  j_end:    4,
+  i_mult:   1,
+  j_mult:   1
+}
+product = [product, foursies(arr, desc)].max
+
+desc = {
+  i_start:  3,
+  i_end:    1,
+  j_start:  0,
+  j_end:    4,
+  i_mult:  -1,
+  j_mult:   1
+}
+product = [product, foursies(arr, desc)].max
+
 puts product
